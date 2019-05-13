@@ -22,8 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.biojava.bio.search.SeqSimilaritySearchHit;
 import org.biojava.bio.search.SeqSimilaritySearchResult;
@@ -33,6 +35,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uminho.ceb.biosystems.merlin.aibench.utilities.LoadFromConf;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.blast.org.biojava3.ws.alignment.qblast.NCBIQBlastAlignmentProperties;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.blast.org.biojava3.ws.alignment.qblast.NCBIQBlastOutputFormat;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.blast.org.biojava3.ws.alignment.qblast.NCBIQBlastOutputProperties;
@@ -41,23 +44,25 @@ import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.datatypes.EntryData;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.ebi.uniprot.UniProtAPI;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.utilities.Enumerators.FileExtensions;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.utilities.MySleep;
-import pt.uminho.ceb.biosystems.merlin.biocomponents.io.SBMLLevelVersion;
+import pt.uminho.ceb.biosystems.merlin.biocomponents.io.Enumerators.SBMLLevelVersion;
 import pt.uminho.ceb.biosystems.merlin.biocomponents.io.readers.ContainerBuilder;
-import pt.uminho.ceb.biosystems.merlin.biocomponents.io.readers.MerlinImportUtils;
 import pt.uminho.ceb.biosystems.merlin.biocomponents.io.writers.SBMLLevel3Writer;
-import pt.uminho.ceb.biosystems.merlin.core.remote.loader.kegg.DatabaseInitialData;
-import pt.uminho.ceb.biosystems.merlin.core.remote.loader.kegg.KeggLoader;
-import pt.uminho.ceb.biosystems.merlin.core.remote.loader.kegg.LoadKeggData;
-import pt.uminho.ceb.biosystems.merlin.core.remote.retriever.alignment.HomologyDataClient;
-import pt.uminho.ceb.biosystems.merlin.core.remote.retriever.alignment.blast.ReadBlasttoList;
-import pt.uminho.ceb.biosystems.merlin.core.remote.retriever.kegg.RetrieveKeggData;
+import pt.uminho.ceb.biosystems.merlin.core.datatypes.WorkspaceInitialData;
 import pt.uminho.ceb.biosystems.merlin.core.utilities.Enumerators.HomologySearchServer;
-import pt.uminho.ceb.biosystems.merlin.core.utilities.LoadFromConf;
 import pt.uminho.ceb.biosystems.merlin.database.connector.databaseAPI.ProjectAPI;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.Connection;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.DatabaseAccess;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.MySQLDatabaseAccess;
+import pt.uminho.ceb.biosystems.merlin.local.alignments.core.RunSimilaritySearch;
+import pt.uminho.ceb.biosystems.merlin.processes.annotation.remote.RemoteDataRetriever;
+import pt.uminho.ceb.biosystems.merlin.processes.annotation.remote.blast.ReadBlasttoList;
+import pt.uminho.ceb.biosystems.merlin.processes.model.kegg.KeggDataRetriever;
+import pt.uminho.ceb.biosystems.merlin.services.WorkspaceInitialDataServices;
+import pt.uminho.ceb.biosystems.merlin.services.model.loaders.LoadMetabolicData;
+import pt.uminho.ceb.biosystems.merlin.utilities.Enumerators.AlignmentScoreType;
 import pt.uminho.ceb.biosystems.merlin.utilities.Enumerators.Matrix;
+import pt.uminho.ceb.biosystems.merlin.utilities.Enumerators.Method;
+import pt.uminho.ceb.biosystems.merlin.utilities.containers.capsules.AlignmentCapsule;
 import pt.uminho.ceb.biosystems.merlin.utilities.io.FileUtils;
 import pt.uminho.ceb.biosystems.mew.biocomponents.container.Container;
 import pt.uminho.ceb.biosystems.mew.biocomponents.container.io.readers.JSBMLReader;
@@ -66,6 +71,70 @@ public class Tests {
 
 	final static Logger logger = LoggerFactory.getLogger(Tests.class);
 
+	//@Test
+	public void testBLAST () throws Exception {
+
+      File subjectFasta = new File("D:/workspaces/merlinDev/merlin-core/ws/sfumaroxidansMPOBT/335543/triage/tcbdFastaFile.faa");
+      
+      File queryFasta = new File("D:/workspaces/merlinDev/merlin-core/ws/sfumaroxidansMPOBT/335543/queryBlast/SubFastaFile_1_of_8.faa");
+
+
+		ConcurrentHashMap<String, AbstractSequence<?>> querySequences= new ConcurrentHashMap<String, AbstractSequence<?>>();
+		querySequences.putAll(FastaReaderHelper.readFastaProteinSequence(queryFasta));
+		
+		Map<String, AbstractSequence<?>> subjectSequences= new HashMap<String, AbstractSequence<?>>();
+		subjectSequences.putAll(FastaReaderHelper.readFastaProteinSequence(subjectFasta));
+		
+		double threshold = 0.00001;
+		
+//		System.out.println(subjectSequences.size()+"\t"+querySequences.size());
+		
+		ConcurrentLinkedQueue<AlignmentCapsule> alignmentContainerSet = new ConcurrentLinkedQueue<AlignmentCapsule>();					/////// no outro o concurrent linked queue est� aqui
+
+		Double evalue = 1E-6;
+		Double bitScore = 50.0;
+		Double queryCoverage = 0.60;
+		Double targetCoverage = 0.60;
+		
+				
+		RunSimilaritySearch search = new RunSimilaritySearch(subjectSequences, threshold, 
+				Method.Blast, querySequences, new AtomicBoolean(), new AtomicInteger(0), new AtomicInteger(0), AlignmentScoreType.ALIGNMENT);
+		
+		search.setSubjectFastaFilePath(subjectFasta.getAbsolutePath());
+		search.setWorkspaceTaxonomyFolderPath("C:\\Users\\odias\\Downloads/test");
+		
+		alignmentContainerSet =  search.runBlastSearch(false,evalue,bitScore,queryCoverage,targetCoverage);
+		
+		for(AlignmentCapsule a : alignmentContainerSet)
+			System.out.println(a.getBitScore()+"\t"+a.getAlignmentScore()+"\t"+a.getMaxScore()+"\t"+a.getScore()+"\t"+a.getIdentityScore()+"\t"+a.getEvalue()+"\t"+a.getCoverageQuery()+"\t"+a.getCoverageTarget()
+			+"\t"+a.getAlignmentLength()+"\t"+a.getQueryLength()+"\t"+a.getTargetLength()+"\t"+a.getQuery()+"\t"+a.getTarget());	
+		
+	}
+	
+	
+	//@Test
+	public void updateGeneNames() throws SQLException {
+		
+		Map<String, String> dic = new HashMap<>();
+		
+		DatabaseAccess dba = new MySQLDatabaseAccess("odias", "odias##", "193.137.11.210", 3306, "cglabrata");
+		Connection conn = new Connection(dba);
+		Statement statement = conn.createStatement();
+
+		ResultSet rs = statement.executeQuery("SELECT locusTag, sequence_id FROM gene;");
+
+		while(rs.next())			
+			dic.put(rs.getString(2), rs.getString(1));
+			
+		dba = new MySQLDatabaseAccess("odias", "odias##", "193.137.11.210", 3306, "calbicans");
+		conn = new Connection(dba);
+		statement = conn.createStatement();
+		
+		for(String key : dic.keySet())
+			statement.execute("UPDATE gene SET locusTag = '"+dic.get(key)+"' WHERE sequence_id = '"+key+"'");
+		
+	}
+	
 
 	//	@Test
 	public void test() throws Exception {
@@ -135,30 +204,29 @@ public class Tests {
 			}
 		}
 
-		HomologyDataClient homologyDataEbiClient = new HomologyDataClient(blastToList, new String [7], new ConcurrentHashMap<String, String[]>(), 
-				new ConcurrentHashMap<String, Boolean>(), new AtomicBoolean(false), HomologySearchServer.NCBI, rqb.getHitlistSize(), true, 36331);
+		RemoteDataRetriever homologyDataEbiClient = new RemoteDataRetriever(blastToList, new String [7], new ConcurrentHashMap<String, String[]>(), 
+				new ConcurrentHashMap<String, Boolean>(), new AtomicBoolean(false), HomologySearchServer.EBI, rqb.getHitlistSize(), true, 36331);
 
 
-		System.out.println(homologyDataEbiClient.getLocus_tag());
-		System.out.println(homologyDataEbiClient.getEValue());
+		System.out.println(homologyDataEbiClient.getLocusTag());
 	}
 
 	public static void kegg(String user, String password, String host, int port, String database, String organismID) throws Exception {
 
 		long startTime = System.currentTimeMillis();
 
-		RetrieveKeggData retrieveKeggData = new RetrieveKeggData(organismID, null, null);
+		KeggDataRetriever retrieveKeggData = new KeggDataRetriever(organismID, null);
 		DatabaseAccess dba = new MySQLDatabaseAccess(user, password, host, port, database);
 
 		int numberOfProcesses =  Runtime.getRuntime().availableProcessors()*2;
 		List<Thread> threads = new ArrayList<Thread>();
 
 		Connection conn = new Connection(dba);
-		DatabaseInitialData databaseInitialData = new DatabaseInitialData(conn);
-		databaseInitialData.retrieveAllData();
+		WorkspaceInitialData databaseInitialData = new WorkspaceInitialData();
+		databaseInitialData = WorkspaceInitialDataServices.retrieveAllData(conn);
 		for(int i=0; i<numberOfProcesses; i++) {
 
-			Runnable load_KEGG_Data = new LoadKeggData(conn,retrieveKeggData, databaseInitialData, null, null, null, null, startTime);
+			Runnable load_KEGG_Data = new LoadMetabolicData(conn, null, databaseInitialData, null, null);
 			Thread thread = new Thread(load_KEGG_Data);
 			threads.add(thread);
 			thread.start();
@@ -171,9 +239,7 @@ public class Tests {
 
 		long endTime2 = System.currentTimeMillis();
 
-		Statement stmt = conn.createStatement();
 		long startTime1 = System.currentTimeMillis();
-		KeggLoader.buildViews(conn, stmt);
 		long endTime1 = System.currentTimeMillis();
 
 		long endTime = System.currentTimeMillis();
@@ -189,7 +255,7 @@ public class Tests {
 		conn.closeConnection();
 	}
 
-	//	@Test
+	
 	public void testReadConfExtensions() throws IOException{
 
 		File extensionFile = new File("D:/projects/merlin/merlin-core/temp/../conf/ftpfiles_extensions.conf");
@@ -491,8 +557,9 @@ public class Tests {
 		//		
 		//		System.out.println(ecNumbers.get("1.1.1.75"));
 
+		//ModelSources m = ModelSources.MODEL_SEED;
 		
-		MerlinImportUtils data = new MerlinImportUtils(cont);
+	//	MerlinImportUtils data = new MerlinImportUtils(cont, m);
 
 		//		ConcurrentLinkedQueue<EnzymeContainer> enzymes = data.getResultEnzymes();
 		//		
@@ -674,60 +741,8 @@ public class Tests {
 		String dbName = "spneumoniaeR6";
 		
 		DatabaseAccess dba = new MySQLDatabaseAccess(confs.get("username"), confs.get("password"), confs.get("host"), confs.get("port"), dbName);
-		Container container = new Container(new ContainerBuilder(dba,"model_".concat(dbName),true,dbName,""));
+		Container container = new Container(new ContainerBuilder(dba,"model_".concat(dbName),true,false, dbName,""));
 		
-//		ReactionCI reaction = container.getReaction("R_00172");
-//		System.out.println(container.getReactions());
-//		System.out.println(reaction.getName());
-//		System.out.println(reaction.getEc_number());
-//		System.out.println(reaction.getId());
-//		System.out.println(reaction.getType());
-		
-//		Map<String,Map<String,String>> metsInfo = container.getMetabolitesExtraInfo();
-//		Map<String,Map<String,String>> reacsInfo = container.getReactionsExtraInfo();
-		
-//		System.out.println(reacsInfo.get("R_00172").get("MERLIN_ID"));
-		
-//		for(ReactionCI reaction : container.getReactions().values()) {
-//			System.out.println("id-->"+reaction.getId() +" " +reaction.getName().split("_")[0]+" GPR---->"+reaction.getGeneRuleString());
-//			
-//			System.out.println("id-->"+reaction.getId() +", reactionName: " +reaction.getName().split("_")[0]
-//					+ ", reactionExtraInfo: " +reacsInfo.get(reaction.getId()));
-			
-//			if(reaction.getSubsystem()!=null || !reaction.getSubsystem().isEmpty())
-//				System.out.println(reaction.getId()+"\t"+reaction.getSubsystem());
-//		}
-		
-//		for(MetaboliteCI metabolite : container.getMetabolites().values()) {
-//			
-////			System.out.println(metabolite.getId());
-//			System.out.println("id-->"+metabolite.getId() +", metaboliteName: " +metabolite.getName()//.split("_")[0]
-//					+ ", metaboliteExtraInfo: " +metsInfo.get(metabolite.getId()));
-//			
-//			System.out.println(metabolite.getFormula());
-//		}
-		
-//		System.out.println(reaction.getSubsystem());
-//		System.out.println(reaction.getSusbystems())
-		
-//		System.out.println(container.getAllSubsystems(";"));
-//		System.out.println(container.getReaction("45007"));
-//		System.out.println(container.getReaction("R_00176").getSubsystem());
-//		System.out.println(new ArrayList<>(container.getAllSubsystems("; ")).get(1));
-//		System.out.println(container.getReactionsByPathway("Biomass Pathway"));
-		
-//		for(String pathway : container.getAllSubsystems("; "))
-//			if(!pathway.isEmpty())
-//				System.out.println(pathway+"\t"+container.getReactionsByPathway(pathway));
-//		System.out.println(container.getPathwaysIDs());
-		
-//		System.out.println(container.getBiomassId());
-//		
-//		System.out.println(container.getReaction("R_00084").getName());
-		
-//		for(ReactionCI reaction : container.getReactions().values())
-//			if(reaction.getName().contains("biomass") || reaction.getName().contains("BIOMASS"))
-//				System.out.println(reaction.getId()+"\t"+reaction.getName());
 		
 		SBMLLevelVersion levelAndVersion = SBMLLevelVersion.L3V2;
 		
@@ -739,14 +754,50 @@ public class Tests {
 
 	}
 	
-//	@Test
+	@Test
 	public void testBeep(){
 		
 		Toolkit.getDefaultToolkit().beep();
+
+		try {
+
+	        /*NOTE: Creating Database Constraints*/
+	        String dbName = "testMerlinDump";
+	        String dbUser = "merlindev";
+	        String dbPass = "dev$2018merlin";
+	        String host = "192.168.85.192";
+	        String port = "2401";
+
+	        /*NOTE: Creating Path Constraints for folder saving*/
+	        /*NOTE: Here the backup folder is created for saving inside it*/
+	        String folderPath = "C:/Users/Davide/merlinNew/sqlDump/backup.sql";
+
+	        System.out.println("C:/Program Files/MySQL/MySQL Workbench 6.3 CE/mysql --user=" + dbUser + " --password=" + dbPass + " --host=" + host + " --port=" + port + " " + dbName + " < " + folderPath);
+	         
+	        /*NOTE: Used to create a cmd command*/
+	        String executeCmd = "C:/Program Files/MySQL/MySQL Workbench 6.3 CE/mysql --user=" + dbUser + " --password=" + dbPass + " --host=" + host + " --port=" + port + " " + dbName + " < " + folderPath;
+
+	        
+	        /*NOTE: Executing the command here*/
+	        Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+	        int processComplete = runtimeProcess.waitFor();
+
+	        /*NOTE: processComplete=0 if correctly executed, will contain other values if not*/
+	        if (processComplete == 0) {
+	            System.out.println("Import Complete");
+	        } else {
+	            System.out.println("Import Failure");
+	        }
+
+		} 
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
-	@Test
+//	@Test
 	public void testWriteFile() throws IOException{
 		
 		FileWriter fstream;

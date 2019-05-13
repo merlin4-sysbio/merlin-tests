@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
 import org.biojava.nbio.core.sequence.template.AbstractSequence;
@@ -24,7 +23,7 @@ public class GprTests {
 	public void test() throws Exception {
 		
 		String args[] = null;
-
+		
 			long reference_organism_id = Long.parseLong(args[0]);
 			double similarity_threshold = Double.parseDouble(args[1]);
 			double referenceTaxonomyThreshold = Double.parseDouble(args[2]); 
@@ -44,13 +43,13 @@ public class GprTests {
 			boolean originalReaction = false;
 
 			DatabaseAccess msqlmt = new MySQLDatabaseAccess(user, password, server, port, database);
-
+			Connection connection = new Connection(msqlmt);
+			
 			if(identifyOrAssign) {
 
-				AtomicBoolean cancel = new AtomicBoolean(false);
 				Method method = Method.SmithWaterman;
 
-				Map<String, List<String>> ec_numbers = ModelAPI.getECNumbers(new Connection(msqlmt));
+				Map<String, List<String>> ec_numbers = ModelAPI.getECNumbers(connection);
 				System.out.println("Enzymes size:\t"+ec_numbers.keySet().size());
 
 				Map<String, AbstractSequence<?>> genome =  new HashMap<>();
@@ -60,7 +59,7 @@ public class GprTests {
 
 				System.out.println("Genome size:\t"+newGenome.keySet().size());
 
-				IdentifyGenomeSubunits i = new IdentifyGenomeSubunits(ec_numbers, newGenome, reference_organism_id, msqlmt, similarity_threshold, 
+				IdentifyGenomeSubunits i = new IdentifyGenomeSubunits(ec_numbers, newGenome, reference_organism_id, connection, similarity_threshold, 
 						referenceTaxonomyThreshold, method, compareToFullGenome);
 				i.runIdentification(true);
 
@@ -68,7 +67,7 @@ public class GprTests {
 			else {
 
 
-				FilterModelReactions f = new FilterModelReactions(msqlmt, originalReaction);
+				FilterModelReactions f = new FilterModelReactions(connection, originalReaction);
 				f.filterReactions(IdentifyGenomeSubunits.runGPRsAssignment(threshold, new Connection(msqlmt)));
 
 				if(integrateToDatabase) {

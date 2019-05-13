@@ -202,7 +202,7 @@ public class NcbiAPITests {
 	}
 
 
-	@Test
+	//@Test
 	public void testReadConfExtensions() throws IOException{
 
 		File extensionFile = new File("D:/projects/merlin/merlin-core/temp/../conf/ftpfiles_extensions.conf");
@@ -331,7 +331,7 @@ public class NcbiAPITests {
 	}
 
 
-	//	@Test
+	@Test
 	public void taxonomy() {
 
 		EntrezServiceFactory entrezServiceFactory = new EntrezServiceFactory("https://eutils.ncbi.nlm.nih.gov/entrez/eutils", false);
@@ -398,7 +398,7 @@ public class NcbiAPITests {
 	//		System.out.println(doc.documentSummary);
 	//	}
 
-	@Test
+	//@Test
 	public void testURL() throws Exception{
 
 

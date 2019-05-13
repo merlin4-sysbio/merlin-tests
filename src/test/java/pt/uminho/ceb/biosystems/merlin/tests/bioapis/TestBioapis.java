@@ -8,15 +8,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.junit.Test;
 
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.datatypes.EntryData;
-import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.datatypes.HomologuesData;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.ebi.uniprot.UniProtAPI;
-import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.ncbi.CreateGenomeFile;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.ncbi.EntrezTaxonomy;
 import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.ncbi.NcbiAPI;
+import pt.uminho.ceb.biosystems.merlin.core.datatypes.annotation.enzymes.AnnotationEnzymesHomologuesData;
 import pt.uminho.ceb.biosystems.mew.utilities.datastructures.pair.Pair;
 import pt.uminho.ceb.biosystems.mew.utilities.io.FileUtils;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
@@ -115,7 +113,7 @@ public class TestBioapis{
 
 		String taxID = "";
 		
-		HomologuesData h = new HomologuesData();
+		AnnotationEnzymesHomologuesData  h = new AnnotationEnzymesHomologuesData();
 		h.setRefSeqGI("15645788");
 
 		List<Pair<String, String>> set = new ArrayList<>();

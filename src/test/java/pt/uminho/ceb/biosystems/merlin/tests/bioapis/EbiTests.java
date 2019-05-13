@@ -133,6 +133,31 @@ public class EbiTests {
 		//		List<String> result1 = EbiRestful.getXml(interpro,"iprscan5", outputformat);
 	}
 
+	public void testa() throws IOException, InterruptedException, URISyntaxException {
+	
+		//    	InterProParser parser = new InterProParser(sequence);
+		//    	for (HashMap<String,Object>domain:parser.xml_information){System.out.println(domain.get("Family"));}
+		//		long startTime = System.currentTimeMillis();
+	
+		//		String file = "GCF_000410535.2_ASM41053v2_protein";
+		String path = "D:/Dropbox/Public/merlin_releases/griffon.faa";
+	
+		File file = new File(path);
+	
+		Map<String,ProteinSequence> map = FastaReaderHelper.readFastaProteinSequence(file);
+	
+		Map<String,InterProResultsList> interpro = InterProMain.processGenome("mikemike@gmail.com", "title", "true", "true",new ArrayList<String>(), map);
+	
+		//		long endTime = System.currentTimeMillis();
+	
+		//		System.out.println("That took " + (endTime - startTime) + " milliseconds");
+	
+		//    	for(String key:readFasta(readFile()).keySet()){
+		//    		System.out.println(key+"\n"+readFasta(readFile()).get(key));
+		//    	}
+	
+	}
+
 	public void test() throws IOException, InterruptedException, URISyntaxException {
 
 		//    	InterProParser parser = new InterProParser(sequence);

@@ -6,38 +6,37 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 
 import org.xml.sax.SAXException;
 
-import pt.uminho.ceb.biosystems.merlin.biocomponents.io.readers.MerlinImportUtils;
-import pt.uminho.ceb.biosystems.merlin.core.remote.loader.kegg.DatabaseInitialData;
-import pt.uminho.ceb.biosystems.merlin.core.remote.loader.kegg.LoadKeggData;
+import pt.uminho.ceb.biosystems.merlin.aibench.utilities.TimeLeftProgress;
+import pt.uminho.ceb.biosystems.merlin.biocomponents.io.readers.ModelImporter;
+import pt.uminho.ceb.biosystems.merlin.core.datatypes.WorkspaceInitialData;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.Connection;
-import pt.uminho.ceb.biosystems.merlin.utilities.TimeLeftProgress;
+import pt.uminho.ceb.biosystems.merlin.services.model.loaders.LoadMetabolicData;
 import pt.uminho.ceb.biosystems.mew.biocomponents.container.io.readers.ErrorsException;
 import pt.uminho.ceb.biosystems.mew.biocomponents.validation.io.JSBMLValidationException;
 
-public class TestImportModel extends LoadKeggData{
+public class TestImportModel extends LoadMetabolicData{
 	
 //	private ConcurrentLinkedQueue<String> compoundsWithBiologicalRoles;
 //	private ConcurrentHashMap<String,Integer> pathwaysID;
 
 	
-	public TestImportModel(MerlinImportUtils modelData, Connection connection, DatabaseInitialData databaseInitialData, TimeLeftProgress progress, AtomicInteger datum, AtomicBoolean cancel, AtomicInteger dataSize, long startTime) 
-					throws IOException, XMLStreamException, ErrorsException, ParserConfigurationException, SAXException, JSBMLValidationException, SQLException{
+	public TestImportModel(ModelImporter modelData, Connection connection, WorkspaceInitialData databaseInitialData, TimeLeftProgress progress, AtomicInteger datum, AtomicBoolean cancel, AtomicInteger dataSize, long startTime) 
+					throws IOException, ErrorsException, ParserConfigurationException, SAXException, JSBMLValidationException, SQLException{
 		
-		super(connection, databaseInitialData ,progress, datum,  cancel,  dataSize,  startTime);
+		super(connection, null, databaseInitialData ,cancel,  dataSize);
 		
 //		this.compoundsWithBiologicalRoles = new ConcurrentLinkedQueue<String>();
 //		this.pathwaysID = new ConcurrentHashMap<>();
 		
-		this.setKegg_Pathways_Hierarchy(modelData.getResultPathwaysHierarchy());
-		this.setResultMetabolites(modelData.getResultMetasbolites());
-		this.setResultCompartments(modelData.getResultCompartments());
-		this.setResultEnzymes(modelData.getResultEnzymes());
-		this.setResultReactions(modelData.getResultReactions());
-		this.setResultGenes(modelData.getResultGenes());
+		this.setKeggPathwaysHierarchy(modelData.getWorkspaceData().getResultPathwaysHierarchy());
+		this.setResultMetabolites(modelData.getWorkspaceData().getResultMetabolites());
+		this.setResultCompartments(modelData.getWorkspaceData().getResultCompartments());
+		this.setResultEnzymes(modelData.getWorkspaceData().getResultEnzymes());
+		this.setResultReactions(modelData.getWorkspaceData().getResultReactions());
+		this.setResultGenes(modelData.getWorkspaceData().getResultGenes());
 		
 	}
 }

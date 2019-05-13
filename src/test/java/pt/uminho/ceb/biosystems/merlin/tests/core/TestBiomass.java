@@ -10,21 +10,30 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pt.uminho.ceb.biosystems.merlin.BiomassMetabolite;
-import pt.uminho.ceb.biosystems.merlin.Enumerators.ReturnType;
-import pt.uminho.ceb.biosystems.merlin.EstimateBiomassContents;
-import pt.uminho.ceb.biosystems.merlin.Utilities;
-import pt.uminho.ceb.biosystems.merlin.core.utilities.DatabaseLoaders;
+import pt.uminho.ceb.biosystems.merlin.BiomassUtilities;
+import pt.uminho.ceb.biosystems.merlin.Enumerators.MetabolicDataSource;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.Connection;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.DatabaseAccess;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.H2DatabaseAccess;
+import pt.uminho.ceb.biosystems.merlin.datatypes.BiomassMetabolite;
 import pt.uminho.ceb.biosystems.merlin.utilities.io.FileUtils;
-import pt.uminho.ceb.biosystems.mew.utilities.datastructures.map.MapUtils;
+import uk.ac.ebi.uniprot.dataservice.client.exception.ServiceException;
 
 public class TestBiomass {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TestBiomass.class);
 
+	
+	@Test
+	public void testTaxonomy() throws ServiceException {
+		
+//		System.out.println(UniProtAPI.getTaxonomyFromNCBITaxnomyID(1574141, 0));
+
+//		UniProtAPI.getT(243276);
+//		UniProtAPI.getT(511145);
+//		UniProtAPI.getT(1574141);
+	}
+	
 	
 	public void doubleConverter() throws ScriptException{
 		
@@ -41,7 +50,6 @@ public class TestBiomass {
 	    System.out.println( obj );
 	}
 	
-	@Test
 	public void test() throws Exception {
 	
 		//String proteinPath = "C:/Users/Oscar Dias/Desktop/biomassTests/E.coli_CDS_AA.txt",
@@ -68,28 +76,28 @@ public class TestBiomass {
 		DatabaseAccess da = new H2DatabaseAccess(user, password, databaseName, FileUtils.getHomeFolderPath());;
 		Connection connection = new Connection(da);
 		
-		Map<String, BiomassMetabolite> biomassMetabolites = Utilities.getBiomassMetabolites();
-		biomassMetabolites = DatabaseLoaders.getModelInformationForBiomass(biomassMetabolites, connection.createStatement());
+		Map<String, BiomassMetabolite> biomassMetabolites = BiomassUtilities.getBiomassMetabolites(MetabolicDataSource.KEGG);
+		biomassMetabolites = BiomassUtilities.getModelInformationForBiomass(biomassMetabolites, connection.createStatement());
 		connection.closeConnection();
 		
 		System.out.println(biomassMetabolites);
 		
-		logger.info("Proteins ");
-		Map<BiomassMetabolite, Double> proteins = EstimateBiomassContents.getProteinsRelativeAbundance(proteinPath, proteinBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_prot.txt", biomassMetabolites, geneData, separator);
-		logger.info("\nProteins {}", MapUtils.prettyToString(proteins));
-		logger.info("DNA");
-		Map<BiomassMetabolite, Double> dna = EstimateBiomassContents.getNucleotides_RelativeAbundance(dnaPath, dnaBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_dna.txt", biomassMetabolites, false);
-		logger.info("\nDNA {}", MapUtils.prettyToString(dna));
-		logger.info("rRNA ");
-		Map<BiomassMetabolite, Double> rRNA = EstimateBiomassContents.getNucleotides_RelativeAbundance(rRnaPath, rnaBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_rrna.txt", biomassMetabolites, true);
-		logger.info("mRNA ");
-		Map<BiomassMetabolite, Double> mRNA = EstimateBiomassContents.getNucleotides_RelativeAbundance(mRnaPath, rnaBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_mrna.txt", biomassMetabolites, true);
-		logger.info("tRNA ");
-		Map<BiomassMetabolite, Double> tRNA = EstimateBiomassContents.getNucleotides_RelativeAbundance(tRnaPath, rnaBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_trna.txt", biomassMetabolites, true);
-		logger.info("RNA ");
-		Map<BiomassMetabolite, Double> rna = Utilities.mergeRNAMaps(mRNA, mRnaContents, tRNA, tRnaContents, rRNA, rRnaContents);
-		
-		logger.info("\nRNA {}", MapUtils.prettyToString(rna));
+//		logger.info("Proteins ");
+//		Map<BiomassMetabolite, Double> proteins = EstimateBiomassContents.getProteinsRelativeAbundance(proteinPath, proteinBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_prot.txt", biomassMetabolites, geneData, separator);
+//		logger.info("\nProteins {}", MapUtils.prettyToString(proteins));
+//		logger.info("DNA");
+//		Map<BiomassMetabolite, Double> dna = EstimateBiomassContents.getNucleotides_RelativeAbundance(dnaPath, dnaBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_dna.txt", biomassMetabolites, false);
+//		logger.info("\nDNA {}", MapUtils.prettyToString(dna));
+//		logger.info("rRNA ");
+//		Map<BiomassMetabolite, Double> rRNA = EstimateBiomassContents.getNucleotides_RelativeAbundance(rRnaPath, rnaBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_rrna.txt", biomassMetabolites, true);
+//		logger.info("mRNA ");
+//		Map<BiomassMetabolite, Double> mRNA = EstimateBiomassContents.getNucleotides_RelativeAbundance(mRnaPath, rnaBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_mrna.txt", biomassMetabolites, true);
+//		logger.info("tRNA ");
+//		Map<BiomassMetabolite, Double> tRNA = EstimateBiomassContents.getNucleotides_RelativeAbundance(tRnaPath, rnaBiomassContents, true, ReturnType.MMol_GDW, exportFilePath+"_trna.txt", biomassMetabolites, true);
+//		logger.info("RNA ");
+//		Map<BiomassMetabolite, Double> rna = Utilities.mergeRNAMaps(mRNA, mRnaContents, tRNA, tRnaContents, rRNA, rRnaContents);
+//		
+//		logger.info("\nRNA {}", MapUtils.prettyToString(rna));
 
 	}
 }

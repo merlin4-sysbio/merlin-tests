@@ -14,8 +14,8 @@ import pt.uminho.ceb.biosystems.merlin.database.connector.databaseAPI.ModelAPI;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.Connection;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.DatabaseAccess;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.MySQLDatabaseAccess;
+import pt.uminho.ceb.biosystems.merlin.utilities.Pair;
 import pt.uminho.ceb.biosystems.merlin.utilities.Utilities;
-import pt.uminho.ceb.biosystems.mew.utilities.datastructures.pair.Pair;
 
 public class Tests {
 

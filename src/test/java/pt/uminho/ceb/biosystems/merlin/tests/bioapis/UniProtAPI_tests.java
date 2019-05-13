@@ -10,9 +10,10 @@ import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.ebi.uniprot.UniProtAP
 
 public class UniProtAPI_tests {
 
+	@Test
 	public void uniTest(){
 	
-		System.out.println(UniProtAPI.getEntryData("CAG69663.1", 62977));
+		System.out.println(UniProtAPI.getEntryData("HJGLNLEB_16312", 204536));
 		//System.out.println(UniProtAPI.getEntryDataFromAccession("P07658"));
 	}
 	
@@ -24,7 +25,7 @@ public class UniProtAPI_tests {
 		
 	}
 	
-	@Test	
+	
 	public void testUniprotStatus() throws Exception {
 		
 		List<String> refSeqIDs = new ArrayList<>();
