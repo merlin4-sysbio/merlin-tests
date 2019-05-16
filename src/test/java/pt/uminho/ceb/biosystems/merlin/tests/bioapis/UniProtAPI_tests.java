@@ -13,7 +13,7 @@ public class UniProtAPI_tests {
 	@Test
 	public void uniTest(){
 	
-		System.out.println(UniProtAPI.getEntryData("HJGLNLEB_16312", 204536));
+		System.out.println(UniProtAPI.getEntryData("b0238"));
 		//System.out.println(UniProtAPI.getEntryDataFromAccession("P07658"));
 	}
 	

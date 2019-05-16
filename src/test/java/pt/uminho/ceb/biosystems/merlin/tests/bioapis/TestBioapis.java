@@ -111,7 +111,7 @@ public class TestBioapis{
 	//@Test
 	public void getUniprotData() throws Exception{
 
-		String taxID = "";
+		long taxID = 0;
 		
 		AnnotationEnzymesHomologuesData  h = new AnnotationEnzymesHomologuesData();
 		h.setRefSeqGI("15645788");
