@@ -741,7 +741,7 @@ public class Tests {
 		String dbName = "spneumoniaeR6";
 		
 		DatabaseAccess dba = new MySQLDatabaseAccess(confs.get("username"), confs.get("password"), confs.get("host"), confs.get("port"), dbName);
-		Container container = new Container(new ContainerBuilder(dba,"model_".concat(dbName),true,false, dbName,""));
+		Container container = new Container(new ContainerBuilder(dbName, new Connection(dba),"model_".concat(dbName),true,false, dbName,""));
 		
 		
 		SBMLLevelVersion levelAndVersion = SBMLLevelVersion.L3V2;
