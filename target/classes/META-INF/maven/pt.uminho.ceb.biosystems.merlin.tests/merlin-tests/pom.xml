@@ -11,8 +11,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
-		<pt.uminho.ceb.biosystems.merlin.version>0.0.3-SNAPSHOT</pt.uminho.ceb.biosystems.merlin.version>
-		<pt.uminho.ceb.biosystems.merlin.groupId>pt.uminho.ceb.biosystems.merlin</pt.uminho.ceb.biosystems.merlin.groupId>
 	</properties>
 
 	<dependencies>
@@ -25,27 +23,10 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.25</version>
-		</dependency>
-		<dependency>
 			<groupId>pt.uminho.ceb.biosystems.merlin</groupId>
-			<artifactId>merlin</artifactId>
-			<version>3.9.3</version>
+			<artifactId>merlin-aibench</artifactId>
+			<version>4.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
-	<plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.3</version>
-			<configuration>
-				<source>1.8</source>
-				<target>1.8</target>
-				<testSource>false</testSource>
-			</configuration>
-		</plugin>
-	</plugins>
 </project>

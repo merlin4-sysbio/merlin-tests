@@ -47,6 +47,7 @@ import pt.uminho.ceb.biosystems.merlin.bioapis.externalAPI.utilities.MySleep;
 import pt.uminho.ceb.biosystems.merlin.biocomponents.io.Enumerators.SBMLLevelVersion;
 import pt.uminho.ceb.biosystems.merlin.biocomponents.io.readers.ContainerBuilder;
 import pt.uminho.ceb.biosystems.merlin.biocomponents.io.writers.SBMLLevel3Writer;
+import pt.uminho.ceb.biosystems.merlin.core.containers.alignment.AlignmentContainer;
 import pt.uminho.ceb.biosystems.merlin.core.datatypes.WorkspaceInitialData;
 import pt.uminho.ceb.biosystems.merlin.core.utilities.Enumerators.HomologySearchServer;
 import pt.uminho.ceb.biosystems.merlin.database.connector.databaseAPI.ProjectAPI;
@@ -62,7 +63,6 @@ import pt.uminho.ceb.biosystems.merlin.services.model.loaders.LoadMetabolicData;
 import pt.uminho.ceb.biosystems.merlin.utilities.Enumerators.AlignmentScoreType;
 import pt.uminho.ceb.biosystems.merlin.utilities.Enumerators.Matrix;
 import pt.uminho.ceb.biosystems.merlin.utilities.Enumerators.Method;
-import pt.uminho.ceb.biosystems.merlin.utilities.containers.capsules.AlignmentCapsule;
 import pt.uminho.ceb.biosystems.merlin.utilities.io.FileUtils;
 import pt.uminho.ceb.biosystems.mew.biocomponents.container.Container;
 import pt.uminho.ceb.biosystems.mew.biocomponents.container.io.readers.JSBMLReader;
@@ -89,7 +89,7 @@ public class Tests {
 		
 //		System.out.println(subjectSequences.size()+"\t"+querySequences.size());
 		
-		ConcurrentLinkedQueue<AlignmentCapsule> alignmentContainerSet = new ConcurrentLinkedQueue<AlignmentCapsule>();					/////// no outro o concurrent linked queue est� aqui
+		ConcurrentLinkedQueue<AlignmentContainer> alignmentContainerSet = new ConcurrentLinkedQueue<AlignmentContainer>();					/////// no outro o concurrent linked queue est� aqui
 
 		Double evalue = 1E-6;
 		Double bitScore = 50.0;
@@ -105,7 +105,7 @@ public class Tests {
 		
 		alignmentContainerSet =  search.runBlastSearch(false,evalue,bitScore,queryCoverage,targetCoverage);
 		
-		for(AlignmentCapsule a : alignmentContainerSet)
+		for(AlignmentContainer a : alignmentContainerSet)
 			System.out.println(a.getBitScore()+"\t"+a.getAlignmentScore()+"\t"+a.getMaxScore()+"\t"+a.getScore()+"\t"+a.getIdentityScore()+"\t"+a.getEvalue()+"\t"+a.getCoverageQuery()+"\t"+a.getCoverageTarget()
 			+"\t"+a.getAlignmentLength()+"\t"+a.getQueryLength()+"\t"+a.getTargetLength()+"\t"+a.getQuery()+"\t"+a.getTarget());	
 		
