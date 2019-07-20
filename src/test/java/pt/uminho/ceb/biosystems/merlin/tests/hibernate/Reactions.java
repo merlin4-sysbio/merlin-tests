@@ -23,13 +23,13 @@ public class Reactions {
 //		InitDataAccess.getInstance().getDatabaseService("s2m2");
 //	}
 
-//	@Test
+	@Test
 	public void test() {
 		try {
 //			int res = InitDataAccess.getInstance().getDatabaseService().getStoichiometryID(66, "-1208", 1, "-1");
-			List<ModelDesnormalizedReactionPathwayAndCompartment> res = InitDataAccess.getInstance().getDatabaseService("aaaHibernateTest").getAllReactionsView(true, true);
+			List<ModelDesnormalizedReactionPathwayAndCompartment> res = InitDataAccess.getInstance().getDatabaseService("aaTestdb").getAllReactionsView(false, false);
 			
-			System.out.println(res);
+//			System.out.println(res);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -80,7 +80,7 @@ public class Reactions {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void insertReactio() {
 		try {
 			
@@ -116,6 +116,5 @@ public class Reactions {
 			e.printStackTrace();
 		}
 	}
-	
 	
 }
