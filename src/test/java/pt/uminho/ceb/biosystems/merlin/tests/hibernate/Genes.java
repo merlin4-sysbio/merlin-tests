@@ -59,12 +59,28 @@ public class Genes {
 		}
 	}
 
-	@Test
+	//@Test
 	public void checkSequencesByType() {
 		try {
 			
 			System.out.println(InitDataAccess.getInstance().getDatabaseService("aaTestdb").checkGenomeSequencesByType(SequenceType.PROTEIN));
 			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void insertModelGeneHasCompartment() {
+		try {
+			
+			
+			String databaseName = "testDlimaInsertsUpdates";
+			//InitDataAccess.getInstance().getDatabaseService(databaseName).insertModelGeneHasCompartment(true, "score1", 1, 1);
+			
+			InitDataAccess.getInstance().getDatabaseService(databaseName).insertModelCompound(null,null,null,null,null,null,null,null,null,null);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
