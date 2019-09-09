@@ -20,11 +20,23 @@ public class Project {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void updateProject() {
 		try {
 			
 			InitDataAccess.getInstance().getDatabaseService("aaaDBTest24").updateOrganismID(Long.valueOf(35));
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void insertProjectEntry() {
+		try {
+			
+			InitDataAccess.getInstance().getDatabaseService("aaTestdb").insertProjectEntry(Long.valueOf(15), 2);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

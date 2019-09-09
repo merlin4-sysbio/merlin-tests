@@ -211,49 +211,49 @@ public class Tests {
 		System.out.println(homologyDataEbiClient.getLocusTag());
 	}
 
-	public static void kegg(String user, String password, String host, int port, String database, String organismID) throws Exception {
-
-		long startTime = System.currentTimeMillis();
-
-		KeggDataRetriever retrieveKeggData = new KeggDataRetriever(organismID, null);
-		DatabaseAccess dba = new MySQLDatabaseAccess(user, password, host, port, database);
-
-		int numberOfProcesses =  Runtime.getRuntime().availableProcessors()*2;
-		List<Thread> threads = new ArrayList<Thread>();
-
-		Connection conn = new Connection(dba);
-		WorkspaceInitialData databaseInitialData = new WorkspaceInitialData();
-		databaseInitialData = WorkspaceInitialDataServices.retrieveAllData(conn);
-		for(int i=0; i<numberOfProcesses; i++) {
-
-			Runnable load_KEGG_Data = new LoadMetabolicData(conn, null, databaseInitialData, null, null);
-			Thread thread = new Thread(load_KEGG_Data);
-			threads.add(thread);
-			thread.start();
-		}
-
-		for(Thread thread :threads)
-		{
-			thread.join();
-		}
-
-		long endTime2 = System.currentTimeMillis();
-
-		long startTime1 = System.currentTimeMillis();
-		long endTime1 = System.currentTimeMillis();
-
-		long endTime = System.currentTimeMillis();
-
-		System.out.println("Total elapsed time in execution of method Load_kegg is :"+ String.format("%d min, %d sec", 
-				TimeUnit.MILLISECONDS.toMinutes(endTime2-startTime),TimeUnit.MILLISECONDS.toSeconds(endTime2-startTime) -TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(endTime2-startTime))));
-
-		System.out.println("Total elapsed time in execution of method build view is :"+ String.format("%d min, %d sec", 
-				TimeUnit.MILLISECONDS.toMinutes(endTime1-startTime1),TimeUnit.MILLISECONDS.toSeconds(endTime1-startTime1) -TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(endTime1-startTime1))));
-
-		System.out.println("Total elapsed time in execution of method TOTAL is :"+ String.format("%d min, %d sec", 
-				TimeUnit.MILLISECONDS.toMinutes(endTime-startTime),TimeUnit.MILLISECONDS.toSeconds(endTime-startTime) -TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(endTime-startTime))));
-		conn.closeConnection();
-	}
+//	public static void kegg(String user, String password, String host, int port, String database, String organismID) throws Exception {
+//
+//		long startTime = System.currentTimeMillis();
+//
+//		KeggDataRetriever retrieveKeggData = new KeggDataRetriever(organismID, null);
+//		DatabaseAccess dba = new MySQLDatabaseAccess(user, password, host, port, database);
+//
+//		int numberOfProcesses =  Runtime.getRuntime().availableProcessors()*2;
+//		List<Thread> threads = new ArrayList<Thread>();
+//
+//		Connection conn = new Connection(dba);
+//		WorkspaceInitialData databaseInitialData = new WorkspaceInitialData();
+//		databaseInitialData = WorkspaceInitialDataServices.retrieveAllData(conn);
+//		for(int i=0; i<numberOfProcesses; i++) {
+//
+//			Runnable load_KEGG_Data = new LoadMetabolicData(conn, null, databaseInitialData, null, null);
+//			Thread thread = new Thread(load_KEGG_Data);
+//			threads.add(thread);
+//			thread.start();
+//		}
+//
+//		for(Thread thread :threads)
+//		{
+//			thread.join();
+//		}
+//
+//		long endTime2 = System.currentTimeMillis();
+//
+//		long startTime1 = System.currentTimeMillis();
+//		long endTime1 = System.currentTimeMillis();
+//
+//		long endTime = System.currentTimeMillis();
+//
+//		System.out.println("Total elapsed time in execution of method Load_kegg is :"+ String.format("%d min, %d sec", 
+//				TimeUnit.MILLISECONDS.toMinutes(endTime2-startTime),TimeUnit.MILLISECONDS.toSeconds(endTime2-startTime) -TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(endTime2-startTime))));
+//
+//		System.out.println("Total elapsed time in execution of method build view is :"+ String.format("%d min, %d sec", 
+//				TimeUnit.MILLISECONDS.toMinutes(endTime1-startTime1),TimeUnit.MILLISECONDS.toSeconds(endTime1-startTime1) -TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(endTime1-startTime1))));
+//
+//		System.out.println("Total elapsed time in execution of method TOTAL is :"+ String.format("%d min, %d sec", 
+//				TimeUnit.MILLISECONDS.toMinutes(endTime-startTime),TimeUnit.MILLISECONDS.toSeconds(endTime-startTime) -TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(endTime-startTime))));
+//		conn.closeConnection();
+//	}
 
 	
 	public void testReadConfExtensions() throws IOException{

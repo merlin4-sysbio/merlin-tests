@@ -67,14 +67,14 @@ public class GprTests {
 			else {
 
 
-				FilterModelReactions f = new FilterModelReactions(connection, originalReaction);
-				f.filterReactions(IdentifyGenomeSubunits.runGPRsAssignment(threshold, new Connection(msqlmt)));
-
-				if(integrateToDatabase) {
-
-					f.removeReactionsFromModel(keepReactionsWithNotes, keepManualReactions);
-					f.setModelGPRsFromTool();
-				}
+//				FilterModelReactions f = new FilterModelReactions(connection, originalReaction);
+//				f.filterReactions(IdentifyGenomeSubunits.runGPRsAssignment(threshold, new Connection(msqlmt)));
+//
+//				if(integrateToDatabase) {
+//
+//					f.removeReactionsFromModel(keepReactionsWithNotes, keepManualReactions);
+//					f.setModelGPRsFromTool();
+//				}
 			}
 	}
 

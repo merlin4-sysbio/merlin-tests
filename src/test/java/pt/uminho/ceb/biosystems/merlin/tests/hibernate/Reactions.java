@@ -81,23 +81,23 @@ public class Reactions {
 	}
 	
 //	@Test
-	public void insertReactio() {
-		try {
-			
-			Integer modelSequence = InitDataAccess.getInstance().getDatabaseService("aaaDBTest24").insertNewReaction(false, 0, 2, "1 and a 3",
-					"a + b = c", true, false, true, "a", "aa", 1);
-			
-			System.out.println(modelSequence);
+//	public void insertReactio() {
+//		try {
 //			
-//			InitDataAccess.getInstance().getDatabaseService("newDatabaseFormat").insertNewReaction(false, "outside", -9.0, 1.0, "I and G or U", null, null);
-			
-			System.out.println("done");
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//			Integer modelSequence = InitDataAccess.getInstance().getDatabaseService("aaaDBTest24").insertNewReaction(false, 0, 2, "1 and a 3",
+//					"a + b = c", true, false, true, "a", "aa", 1);
+//			
+//			System.out.println(modelSequence);
+////			
+////			InitDataAccess.getInstance().getDatabaseService("newDatabaseFormat").insertNewReaction(false, "outside", -9.0, 1.0, "I and G or U", null, null);
+//			
+//			System.out.println("done");
+//			
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 //	@Test
 	public void findAvailableDatabases() {
