@@ -62,7 +62,11 @@ public class Genes {
 		}
 	}
 
+<<<<<<< HEAD
 //	@Test
+=======
+	//@Test
+>>>>>>> c3d3c8c2744e74c1e4c2ccf90dc0e75100e25b02
 	public void checkSequencesByType() {
 		try {
 			
@@ -74,6 +78,7 @@ public class Genes {
 		}
 	}
 	
+<<<<<<< HEAD
 //	@Test
 	public void checkInsertHomologyH2() {
 		try {
@@ -145,13 +150,27 @@ public class Genes {
 			String organelle= "mito";
 	
 			AnnotationEnzymesServices.insertGeneHomologues(databaseName,organismSKey, locusID, definition, calculatedMw, product, organelle, uniprot_star_boolean);
+=======
+	@Test
+	public void insertModelGeneHasCompartment() {
+		try {
+			
+			
+			String databaseName = "testDlimaInsertsUpdates";
+			//InitDataAccess.getInstance().getDatabaseService(databaseName).insertModelGeneHasCompartment(true, "score1", 1, 1);
+			
+			InitDataAccess.getInstance().getDatabaseService(databaseName).insertModelCompound(null,null,null,null,null,null,null,null,null,null);
+>>>>>>> c3d3c8c2744e74c1e4c2ccf90dc0e75100e25b02
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 
 	
+=======
+>>>>>>> c3d3c8c2744e74c1e4c2ccf90dc0e75100e25b02
 }
 
