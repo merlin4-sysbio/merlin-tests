@@ -21,10 +21,4 @@ public class Protein {
 		
 	}
 
-	@Test
-	public void insertEnzyme2() throws IOException, Exception {
-		ModelEnzymesServices.insertEnzyme("aaTestdb", 1, "1.2.1", true, "KEGG");
-//		InitDataAccess.getInstance().getDatabaseService("aaTestdb").insertEnzymes(1, "1.1.1.1", false);
-		
-	}
 }

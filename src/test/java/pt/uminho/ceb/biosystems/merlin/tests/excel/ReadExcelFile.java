@@ -3,6 +3,7 @@ package pt.uminho.ceb.biosystems.merlin.tests.excel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +56,8 @@ public class ReadExcelFile {
 						line[currentCell.getColumnIndex()] = value;
 
 					}
+					
+//					System.out.println(Arrays.asList(line));
 
 					results.add(line);
 					
