@@ -77,8 +77,8 @@ public class TestBiomass {
 		Connection connection = new Connection(da);
 		
 		Map<String, BiomassMetabolite> biomassMetabolites = BiomassUtilities.getBiomassMetabolites(MetabolicDataSource.KEGG);
-		biomassMetabolites = BiomassUtilities.getModelInformationForBiomass(biomassMetabolites, connection.createStatement());
-		connection.closeConnection();
+//		biomassMetabolites = BiomassUtilities.getModelInformationForBiomass(biomassMetabolites, connection.createStatement());
+//		connection.closeConnection();
 		
 		System.out.println(biomassMetabolites);
 		

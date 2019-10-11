@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +23,7 @@ import pt.uminho.ceb.biosystems.merlin.utilities.io.FileUtils;
 
 public class hpluvialis {
 
-	@Test
+//	@Test
 	public void test() throws SQLException {
 
 		try {
@@ -50,7 +49,36 @@ public class hpluvialis {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void removeCompartmentsFromTransporters() throws SQLException{
 
+		Connection conn = new Connection(generateDBAccess());
+
+		Statement stmt = conn.createStatement();
+		Statement stmt2 = conn.createStatement();
+		
+		Set<Integer> ids = new HashSet<>(); 
+
+		ResultSet rs = stmt.executeQuery("SELECT idreaction FROM model_reaction " + 
+				"INNER JOIN model_pathway_has_reaction ON idreaction = reaction_idreaction " + 
+				"INNER JOIN model_stoichiometry ON idreaction = model_reaction_idreaction " + 
+				"WHERE pathway_idpathway = 29 AND stoichiometric_coefficient = -1;");
+
+		while(rs.next()) {
+//			stmt2.execute("UPDATE model_stoichiometry SET model_compartment_idcompartment = 1 WHERE stoichiometric_coefficient = 1 AND model_reaction_idreaction = " + rs.getInt(1) + ";");
+			ids.add(rs.getInt(1));
+		
+		}
+
+		System.out.println(ids.size());
+		
+		rs.close();
+		stmt.close();
+		stmt2.close();
+		conn.closeConnection();
+		
+	}
 
 	private static Map<String, String> findKeggIDs(List<String[]> excel){
 
@@ -102,7 +130,7 @@ public class hpluvialis {
 		password = credentials.get("password");
 		host = credentials.get("host");
 		port = credentials.get("port");
-		database = "hpluvialis_restored";
+		database = "hpluvialis_v4_clone";
 
 		return new MySQLDatabaseAccess(username, password, host, port, database);
 	}

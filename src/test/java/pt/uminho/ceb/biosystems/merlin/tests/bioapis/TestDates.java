@@ -1,6 +1,6 @@
 package pt.uminho.ceb.biosystems.merlin.tests.bioapis;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

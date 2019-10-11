@@ -2,11 +2,8 @@ package pt.uminho.ceb.biosystems.merlin.tests.hibernate;
 
 import java.util.List;
 
-import org.junit.Test;
-
 import pt.uminho.ceb.biosystems.merlin.core.containers.model.GeneContainer;
 import pt.uminho.ceb.biosystems.merlin.dataAccess.InitDataAccess;
-import pt.uminho.ceb.biosystems.merlin.utilities.Enumerators.SequenceType;
 
 public class Genes {
 	
@@ -59,15 +56,15 @@ public class Genes {
 		}
 	}
 
-	@Test
-	public void checkSequencesByType() {
-		try {
-			
-			System.out.println(InitDataAccess.getInstance().getDatabaseService("aaTestdb").checkGenomeSequencesByType(SequenceType.PROTEIN));
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	@Test
+//	public void checkSequencesByType() {
+//		try {
+//			
+//			System.out.println(InitDataAccess.getInstance().getDatabaseService("aaTestdb").checkGenomeSequencesByType(SequenceType.PROTEIN));
+//			
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }

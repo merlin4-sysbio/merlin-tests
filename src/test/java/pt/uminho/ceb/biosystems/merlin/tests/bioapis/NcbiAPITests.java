@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -24,11 +23,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
-import javax.sound.midi.Synthesizer;
-
-import org.apache.avro.SchemaBuilder.ArrayBuilder;
 import org.apache.commons.io.FileUtils;
-import org.apache.solr.client.solrj.request.CollectionAdminRequest.Create;
 import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
 import org.biojava.nbio.core.sequence.template.AbstractSequence;
 import org.junit.Test;

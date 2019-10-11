@@ -1,33 +1,22 @@
 package pt.uminho.ceb.biosystems.merlin.tests.rafaela;
 
-import static org.junit.Assert.fail;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
 
-import pt.uminho.ceb.biosystems.merlin.aibench.utilities.LoadFromConf;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.Connection;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.DatabaseAccess;
+import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.Enumerators.DatabaseType;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.H2DatabaseAccess;
 import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.MySQLDatabaseAccess;
-import pt.uminho.ceb.biosystems.merlin.database.connector.datatypes.Enumerators.DatabaseType;
-import pt.uminho.ceb.biosystems.merlin.tests.excel.ReadExcelFile;
-import pt.uminho.ceb.biosystems.merlin.utilities.io.FileUtils;
 
 public class random {
 
-	@Test
+//	@Test
 	public void revertTablesNames() throws SQLException {
 		
 		String host = "palsson.di.uminho.pt";
@@ -46,6 +35,39 @@ public class random {
 		convertTablesNames(connection, tables);
 		
 		connection.closeConnection();
+		
+	}
+	
+	@Test
+	public void romeu() throws SQLException {
+		
+		String host = "palsson.di.uminho.pt";
+		String databaseName = "calbicans";
+		String password = "dev$2018merlin";
+		String port = "2401";
+		String username = "merlindev";
+		DatabaseType type = DatabaseType.MYSQL;
+		
+		DatabaseAccess dbAccess = generateDBAccess(host, databaseName, password, port, username, type);
+		
+		Connection connection = new Connection(dbAccess);
+		
+		Statement statemnt = connection.createStatement();
+		
+		Set<Integer> ids = new HashSet<>();
+		
+		ResultSet rs = statemnt.executeQuery("SELECT stoichiometry.idstoichiometry FROM reaction INNER JOIN stoichiometry ON idreaction = stoichiometry.reaction_idreaction WHERE SOURCE LIKE 'DRAIN%' AND stoichiometry.compartment_idcompartment = 25;");
+		
+		while(rs.next())
+			ids.add(rs.getInt(1));
+		
+		for(int id : ids)
+			statemnt.execute("UPDATE stoichiometry SET stoichiometry.compartment_idcompartment = 18 WHERE stoichiometry.idstoichiometry = " + id +";");
+		
+		System.out.println(ids.size());
+		
+		connection.closeConnection();
+		statemnt.close();
 		
 	}
 	

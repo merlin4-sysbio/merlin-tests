@@ -1,15 +1,6 @@
 package pt.uminho.ceb.biosystems.merlin.tests.hibernate;
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.service.ServiceRegistry;
 import org.junit.Test;
 
 import pt.uminho.ceb.biosystems.merlin.core.datatypes.view.ModelDesnormalizedReactionPathwayAndCompartment;
@@ -23,7 +14,7 @@ public class Reactions {
 //		InitDataAccess.getInstance().getDatabaseService("s2m2");
 //	}
 
-	@Test
+//	@Test
 	public void test() {
 		try {
 //			int res = InitDataAccess.getInstance().getDatabaseService().getStoichiometryID(66, "-1208", 1, "-1");

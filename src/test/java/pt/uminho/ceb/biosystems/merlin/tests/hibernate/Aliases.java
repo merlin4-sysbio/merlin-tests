@@ -1,7 +1,5 @@
 package pt.uminho.ceb.biosystems.merlin.tests.hibernate;
 
-import java.util.List;
-
 import org.junit.Test;
 
 import pt.uminho.ceb.biosystems.merlin.dataAccess.InitDataAccess;
