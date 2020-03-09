@@ -1,7 +1,9 @@
 package pt.uminho.ceb.biosystems.merlin.tests.hibernate;
 
 import java.util.List;
+import java.util.Map;
 
+import org.biojava.nbio.core.sequence.template.AbstractSequence;
 import org.junit.Test;
 
 import pt.uminho.ceb.biosystems.merlin.core.containers.model.GeneContainer;
@@ -62,11 +64,7 @@ public class Genes {
 		}
 	}
 
-<<<<<<< HEAD
-//	@Test
-=======
-	//@Test
->>>>>>> c3d3c8c2744e74c1e4c2ccf90dc0e75100e25b02
+
 	public void checkSequencesByType() {
 		try {
 			
@@ -78,7 +76,6 @@ public class Genes {
 		}
 	}
 	
-<<<<<<< HEAD
 //	@Test
 	public void checkInsertHomologyH2() {
 		try {
@@ -136,22 +133,8 @@ public class Genes {
 		}
 	}
 	
-	@Test
-	public void insertGeneHomologues() {
-		try {
-			
-			String databaseName ="t_blast_bastos" ; 
-			int organismSKey = 1;
-			String locusID = "1";
-			Boolean uniprot_star_boolean = true;
-			String definition = "uma boa cena";
-			Float calculatedMw = (float) 125.34; 
-			String product = "cena";
-			String organelle= "mito";
-	
-			AnnotationEnzymesServices.insertGeneHomologues(databaseName,organismSKey, locusID, definition, calculatedMw, product, organelle, uniprot_star_boolean);
-=======
-	@Test
+
+//	@Test
 	public void insertModelGeneHasCompartment() {
 		try {
 			
@@ -160,17 +143,27 @@ public class Genes {
 			//InitDataAccess.getInstance().getDatabaseService(databaseName).insertModelGeneHasCompartment(true, "score1", 1, 1);
 			
 			InitDataAccess.getInstance().getDatabaseService(databaseName).insertModelCompound(null,null,null,null,null,null,null,null,null,null);
->>>>>>> c3d3c8c2744e74c1e4c2ccf90dc0e75100e25b02
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
-
 	
-=======
->>>>>>> c3d3c8c2744e74c1e4c2ccf90dc0e75100e25b02
+	@Test
+	public void testgetGenomeFromDatabase() {
+		try {
+			
+			
+			String databaseName = "testBlast2";
+			InitDataAccess.getInstance().getDatabaseService(databaseName).getReactionDataForStats(false);
+//			InitDataAccess.getInstance().getDatabaseService(databaseName).checkBiochemicalOrTransportReactions(false)
+			InitDataAccess.getInstance().dropConnection(databaseName);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }
 

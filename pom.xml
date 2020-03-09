@@ -24,8 +24,13 @@
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 		<dependency>
 			<groupId>pt.uminho.ceb.biosystems.merlin</groupId>
-			<artifactId>merlin-aibench</artifactId>
-			<version>4.0.0-SNAPSHOT</version>
+			<artifactId>merlin-gui</artifactId>
+			<version>4.0.3-RELEASE</version>
+		</dependency>
+			<dependency>
+			<groupId>pt.uminho.ceb.biosystems.merlin</groupId>
+			<artifactId>merlin-gpr</artifactId>
+			<version>4.0.3-RELEASE</version>
 		</dependency>
 	</dependencies>
 

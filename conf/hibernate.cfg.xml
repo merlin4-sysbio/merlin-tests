@@ -8,14 +8,11 @@
         <property name="show_sql">false</property>
         <property name="format_sql">true</property>
         <property name="use_sql_comments">false</property>
-        <property name="hibernate.jdbc.batch_size">50</property>
-        
-        
         
         		<!-- connection pool configuration -->
-		<property name="hibernate.c3p0.idle_test_period">5</property>
+		<property name="hibernate.c3p0.idle_test_period">10</property>
 		<property name="hibernate.c3p0.acquireRetryAttempts">1</property>
-		<property name="hibernate.c3p0.max_size">20</property>
+		<property name="hibernate.c3p0.max_size">5</property>
 		<property name="hibernate.c3p0.max_statements">50</property>
 		<property name="hibernate.c3p0.min_size">1</property>
 		<property name="hibernate.c3p0.timeout">10</property>
@@ -31,10 +28,9 @@
 		
 		<property name="hibernate.hbm2ddl.auto">create-drop</property>
 		
-		<!-- <property name="hibernate.hbm2ddl.auto">create-drop</property>
-		<property name="javax.persistence.schema-generation.database.action">drop-and-create</property> -->
+		<property name="hibernate.order_by.default_null_ordering">last</property>
 		
-        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelGene"/>
+    	<mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelGene"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelSequence"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelSubunit"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.annotation.enzymes.EnzymesAnnotationHomologyData"/>
@@ -64,13 +60,11 @@
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelEntityisfrom"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelModule"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.annotation.enzymes.EnzymesAnnotationProductList"/>
-        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.annotation.compartments.CompartmentsAnnotationReports"/>
         
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelSuperpathway"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelStoichiometry"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.project.Projects"/>
-        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelActivatingReaction"/>
-        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelReactionHasEnzyme"/>
+        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelReactionHasModelProtein"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelEnzymaticCofactor"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.interpro.InterproResultHasEntry"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelDblinks"/>
@@ -100,7 +94,7 @@
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelSubstrateAffinity"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelSequenceFeature"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelStrain"/>
-        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelPathwayHasEnzyme"/>
+        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelPathwayHasModelProtein"/>
         
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelGeneHasOrthology"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelMetabolicRegulation"/>
@@ -109,13 +103,11 @@
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelPathwayHasModule"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelProtein"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelModulesHasCompound"/>
-        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelProteinComplex"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.annotation.enzymes.EnzymesAnnotationProductRankHasOrganism"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.regulatory.RegulatoryTranscriptionUnit"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.annotation.enzymes.EnzymesAnnotationOrganism"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelReactionLabels"/>
-        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelEnzyme"/>
         <mapping class="pt.uminho.ceb.biosystems.merlin.entities.regulatory.RegulatoryRiFunction"/>
-          
+        <mapping class="pt.uminho.ceb.biosystems.merlin.entities.model.ModelSubunitHasModelModule"/>
     </session-factory>
 </hibernate-configuration>
